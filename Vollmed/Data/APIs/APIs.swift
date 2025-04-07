@@ -76,7 +76,6 @@ extension APIs {
             default:
                 return nil
             }
-            
         }
         
         case getAllSpecialists
