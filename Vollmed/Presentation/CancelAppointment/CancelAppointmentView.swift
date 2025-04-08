@@ -9,30 +9,11 @@ import SwiftUI
 
 struct CancelAppointmentView: View {
     
-    @State private var reasonToCancel: String = ""
     var appointmentID: String
-    let service = VollmedService()
+    @StateObject var cancelAppointmentViewModel: CancelAppointmentViewModel = .init()
     
     @Environment(\.dismiss) var dismiss
     
-    @State var showAlert: Bool = false
-    @State var isAppointmentCancelled: Bool = false
-    
-    func cancelAppointment() async {
-        
-        let response = await service.cancelAppointment(appointmentID: appointmentID, reasonToCancel: reasonToCancel)
-        
-        print(response)
-        switch response {
-        case .error(let error):
-            print(error.localizedDescription)
-            isAppointmentCancelled = false
-        default:
-            isAppointmentCancelled = true
-            showAlert = true
-            
-        }
-    }
         
         var body: some View {
             VStack(spacing: 16) {
@@ -43,7 +24,7 @@ struct CancelAppointmentView: View {
                     .padding(.top)
                     .multilineTextAlignment(.center)
                 
-                TextEditor(text: $reasonToCancel)
+                TextEditor(text: $cancelAppointmentViewModel.reasonToCancel)
                     .padding()
                     .font(.title3)
                     .scrollContentBackground(.hidden)
@@ -54,7 +35,7 @@ struct CancelAppointmentView: View {
                 
                 Button {
                     Task {
-                        await cancelAppointment()
+                        await cancelAppointmentViewModel.cancelAppointment(appointmentID: appointmentID)
                     }
                 } label: {
                     ButtonView(text: "Cancelar Consulta", buttonType: .cancel)
@@ -63,7 +44,7 @@ struct CancelAppointmentView: View {
             .padding()
             .navigationTitle("Cancelar Consulta")
             .navigationBarTitleDisplayMode(.large)
-            .alert(isAppointmentCancelled ? "Consulta cancelada com sucesso!" : "Erro ao cancelar a consulta", isPresented: $showAlert, presenting: isAppointmentCancelled) { isCanceled in
+            .alert(cancelAppointmentViewModel.isAppointmentCancelled ? "Consulta cancelada com sucesso!" : "Erro ao cancelar a consulta", isPresented: $cancelAppointmentViewModel.showAlert, presenting: cancelAppointmentViewModel.isAppointmentCancelled) { isCanceled in
                 
                 Button("Ok") {
                     if isCanceled {

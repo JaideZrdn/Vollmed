@@ -9,12 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    let service = VollmedService()
-    @State var specialists: AsyncData<[Specialist]> = .loading
-    
-    func getSpecialists() async {
-        self.specialists = await service.fetchAllSpecialists()
-    }
+    @StateObject var homeViewModel: HomeViewModel = .init()
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -35,7 +30,7 @@ struct HomeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 16)
                 
-                AsyncView(asyncData: specialists) { specialists in
+                AsyncView(asyncData: homeViewModel.specialists) { specialists in
                     ForEach(specialists) { specialist in
                         SpecialistCardView(specialist: specialist)
                             .padding(.bottom, 8)
@@ -48,7 +43,7 @@ struct HomeView: View {
         .padding(.top)
         .onAppear {
             Task {
-                await getSpecialists()
+                await homeViewModel.getSpecialists()
             }
         }
     }
