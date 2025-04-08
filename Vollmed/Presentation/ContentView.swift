@@ -13,7 +13,6 @@ struct ContentView: View {
         
         TabView {
             
-            
             Tab {
                 NavigationStack {
                     HomeView()
