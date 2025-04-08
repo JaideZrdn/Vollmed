@@ -9,33 +9,21 @@ import SwiftUI
 
 struct MyAppointmentsView: View {
     
-    let service = WebService()
-    @State private var appointments: [Appointment] = []
+    let service = VollmedService()
+    @State private var appointments: AsyncData<[Appointment]> = .loading
     
     func getAllAppointments() async {
-        
-        do {
-            
-            if let appointment = try await service.getAllAppointments(from: patientID) {
-                self.appointments = appointment
-            }
-            
-        } catch {
-            print(error.localizedDescription)
-        }
-        
+        appointments = await service.getAllAppointments(from: patientID)
     }
     
     var body: some View {
         VStack {
             ScrollView {
-                
-                ForEach(appointments) { appointment in
-                    
-                    SpecialistCardView(specialist: appointment.specialist, appointment: appointment)
-                    
+                AsyncView(asyncData: appointments) { appointments in
+                    ForEach(appointments) { appointment in
+                        SpecialistCardView(specialist: appointment.specialist, appointment: appointment)
+                    }
                 }
-                
             }
             .scrollIndicators(.hidden)
         }

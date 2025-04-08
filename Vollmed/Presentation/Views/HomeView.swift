@@ -9,17 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
     
-    let service = WebService()
-    @State var specialists: [Specialist] = []
+    let service = VollmedService()
+    @State var specialists: AsyncData<[Specialist]> = .loading
     
     func getSpecialists() async {
-        do {
-            if let specialists = try await service.getAllSpecialists() {
-                self.specialists = specialists
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
+        self.specialists = await service.fetchAllSpecialists()
     }
     
     var body: some View {
@@ -40,10 +34,14 @@ struct HomeView: View {
                     .foregroundColor(.accentColor)
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 16)
-                ForEach(specialists) { specialist in
-                    SpecialistCardView(specialist: specialist)
-                        .padding(.bottom, 8)
+                
+                AsyncView(asyncData: specialists) { specialists in
+                    ForEach(specialists) { specialist in
+                        SpecialistCardView(specialist: specialist)
+                            .padding(.bottom, 8)
+                    }
                 }
+                
             }
             .padding(.horizontal)
         }

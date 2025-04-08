@@ -11,7 +11,7 @@ struct CancelAppointmentView: View {
     
     @State private var reasonToCancel: String = ""
     var appointmentID: String
-    let service = WebService()
+    let service = VollmedService()
     
     @Environment(\.dismiss) var dismiss
     
@@ -20,67 +20,66 @@ struct CancelAppointmentView: View {
     
     func cancelAppointment() async {
         
-        do {
-            if try await service.cancelAppointment(appointmentID: appointmentID, reasonToCancel: reasonToCancel) {
-                isAppointmentCancelled = true
-            } else {
-                isAppointmentCancelled = false
-            }
-        } catch {
-            isAppointmentCancelled = false
+        let response = await service.cancelAppointment(appointmentID: appointmentID, reasonToCancel: reasonToCancel)
+        
+        print(response)
+        switch response {
+        case .error(let error):
             print(error.localizedDescription)
+            isAppointmentCancelled = false
+        default:
+            isAppointmentCancelled = true
+            showAlert = true
+            
         }
+    }
         
-        showAlert = true
-        
+        var body: some View {
+            VStack(spacing: 16) {
+                Text("Conte-nos o motivo do cancelamento da sua consulta")
+                    .font(.title3)
+                    .bold()
+                    .foregroundStyle(.accent)
+                    .padding(.top)
+                    .multilineTextAlignment(.center)
+                
+                TextEditor(text: $reasonToCancel)
+                    .padding()
+                    .font(.title3)
+                    .scrollContentBackground(.hidden)
+                    .background(Color(.lightBlue).opacity(0.15))
+                    .foregroundStyle(.accent)
+                    .cornerRadius(16)
+                    .frame(maxHeight: 300)
+                
+                Button {
+                    Task {
+                        await cancelAppointment()
+                    }
+                } label: {
+                    ButtonView(text: "Cancelar Consulta", buttonType: .cancel)
+                }
+            }
+            .padding()
+            .navigationTitle("Cancelar Consulta")
+            .navigationBarTitleDisplayMode(.large)
+            .alert(isAppointmentCancelled ? "Consulta cancelada com sucesso!" : "Erro ao cancelar a consulta", isPresented: $showAlert, presenting: isAppointmentCancelled) { isCanceled in
+                
+                Button("Ok") {
+                    if isCanceled {
+                        dismiss()
+                    }
+                }
+            } message: { isCanceled in
+                if !isCanceled {
+                    Text("A consulta não foi cancelada. Tente novamente mais tarde.")
+                } else {
+                    Text("A consulta foi cancelada com sucesso!")
+                }
+            }
+        }
     }
     
-    var body: some View {
-        VStack(spacing: 16) {
-            Text("Conte-nos o motivo do cancelamento da sua consulta")
-                .font(.title3)
-                .bold()
-                .foregroundStyle(.accent)
-                .padding(.top)
-                .multilineTextAlignment(.center)
-            
-            TextEditor(text: $reasonToCancel)
-                .padding()
-                .font(.title3)
-                .scrollContentBackground(.hidden)
-                .background(Color(.lightBlue).opacity(0.15))
-                .foregroundStyle(.accent)
-                .cornerRadius(16)
-                .frame(maxHeight: 300)
-            
-            Button {
-                Task {
-                    await cancelAppointment()
-                }
-            } label: {
-                ButtonView(text: "Caceelar Consulta", buttonType: .cancel)
-            }
-        }
-        .padding()
-        .navigationTitle("Cancelar Consulta")
-        .navigationBarTitleDisplayMode(.large)
-        .alert(isAppointmentCancelled ? "Consulta cancelada com sucesso!" : "Erro ao cancelar a consulta", isPresented: $showAlert, presenting: isAppointmentCancelled) { isCanceled in
-            
-            Button("Ok") {
-                if isCanceled {
-                    dismiss()
-                }
-            }
-        } message: { isCanceled in
-            if !isCanceled {
-                Text("A consulta não foi cancelada. Tente novamente mais tarde.")
-            } else {
-                Text("A consulta foi cancelada com sucesso!")
-            }
-        }
+    #Preview {
+        CancelAppointmentView(appointmentID: "12313")
     }
-}
-
-#Preview {
-    CancelAppointmentView(appointmentID: "12313")
-}

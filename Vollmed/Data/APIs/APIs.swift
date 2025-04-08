@@ -27,9 +27,9 @@ extension APIs {
             case .scheduleAppointment:
                 return "consulta"
             case .rescheduleAppointment(let appointmentID, _):
-                return "consulta\(appointmentID)"
+                return "consulta/\(appointmentID)"
             case .cancelAppointment(let appointmentID, _):
-                return "consulta\(appointmentID)"
+                return "consulta/\(appointmentID)"
             }
             
         }
@@ -66,7 +66,7 @@ extension APIs {
             
             switch self {
             case .cancelAppointment(_, let reasonToCancel):
-                let requestData = ["motivoCAncelamento": reasonToCancel]
+                let requestData = ["motivoCancelamento": reasonToCancel]
                 return try? JSONSerialization.data(withJSONObject: requestData)
             case .scheduleAppointment(scheduleAppointmentRequest: let request):
                 return try? JSONEncoder().encode(request)

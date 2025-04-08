@@ -24,6 +24,7 @@ class URLSessionAPIClient<Endpoint: APIEndpoint>: APIClient {
         do {
             endpoint.headers?.forEach { request.addValue($0.value, forHTTPHeaderField: $0.key) }
             request.httpBody = endpoint.body
+            request.httpMethod = endpoint.method.rawValue
             
             let (data, urlResponse) = try await URLSession.shared.data(for: request)
             guard let httpURLResponse = urlResponse as? HTTPURLResponse else {

@@ -13,7 +13,7 @@ struct ScheduleAppointmentView: View {
     
     
     @State private var selectedDate: Date = Date()
-    let service = WebService()
+    let service = VollmedService()
     var specialistID: String
     var isRescheduledView: Bool
     var appointmentID: String?
@@ -34,38 +34,30 @@ struct ScheduleAppointmentView: View {
             return
         }
         
-        do {
-            
-            if let _ = try await service.rescheduleAppointment(appointmentID: appointmentID, date: selectedDate.convertToString()) {
-                isAppointmentScheduled = true
-                
-                
-            } else {
-                isAppointmentScheduled = false
-            }
-            
-        } catch {
-            print(error.localizedDescription)
+        
+        let appointmentResponse = await service.rescheduleAppointment(appointmentID: appointmentID, date: selectedDate.convertToString())
+        
+        print(appointmentResponse)
+        switch appointmentResponse {
+        case .error:
             isAppointmentScheduled = false
+        default:
+            isAppointmentScheduled = true
+            
         }
         
         showAlert = true
     }
     
     func scheduleAppointment() async {
-        do {
-            
-            if let _ = try await service.scheduleAppointment(specialistID: specialistID, patientID: patientID, date: selectedDate.convertToString()) {
-    
-                isAppointmentScheduled = true
-            
-            } else {
-                isAppointmentScheduled = false
-            }
-            
-        } catch {
+        
+        let appointmentResponse = await service.scheduleAppointment(specialistID: specialistID, patientID: patientID, date: selectedDate.convertToString())
+        
+        switch appointmentResponse {
+        case .error:
             isAppointmentScheduled = false
-            print(error.localizedDescription)
+        default:
+            isAppointmentScheduled = true
         }
         
         showAlert = true
@@ -122,7 +114,7 @@ struct ScheduleAppointmentView: View {
                 Text("Não foi possível \(isRescheduledView ? "reagendar" : "agendar") a consulta. Tente novamente mais tarde.")
             }
         }
-
+        
         
     }
 }

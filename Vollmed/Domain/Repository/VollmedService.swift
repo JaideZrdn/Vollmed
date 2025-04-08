@@ -37,8 +37,8 @@ class VollmedService {
     }
     
     // Função para cancelar uma consulta
-    func cancelAppointment(appointmentID: String, reasonToCancel: String) async -> AsyncData<Bool> {
-        let result: AsyncData<Bool> = await apiClient.request(.cancelAppointment(appointmentID: appointmentID, reasonToCancel: reasonToCancel))
+    func cancelAppointment(appointmentID: String, reasonToCancel: String) async -> AsyncData<String> {
+        let result: AsyncData<String> = await apiClient.request(.cancelAppointment(appointmentID: appointmentID, reasonToCancel: reasonToCancel))
         return result
     }
 }

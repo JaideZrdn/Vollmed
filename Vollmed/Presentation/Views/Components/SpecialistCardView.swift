@@ -17,17 +17,13 @@ struct SpecialistCardView: View {
     @State private var specialistImage: UIImage?
     
     func downloadImage() async {
-        
         do {
-            
             if let image = try await service.downloadImage(from: specialist.imageUrl) {
                 specialistImage = image
             }
-            
         } catch {
             print(error.localizedDescription)
         }
-        
     }
     
     var body: some View {
