@@ -47,5 +47,11 @@ class VollmedService {
         let result: AsyncData<Patient> = await apiClient.request(.register(patient: patient))
         return result
     }
+    
+    //Funcao para realizar o login na minha API
+    func login(loginRequest: LoginRequest) async -> AsyncData<LoginResponse> {
+        let result: AsyncData<LoginResponse> = await apiClient.request(.login(loginRequest: loginRequest))
+        return result
+    }
 }
 
