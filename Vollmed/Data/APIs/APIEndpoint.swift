@@ -57,6 +57,3 @@ enum APIError: LocalizedError, Decodable {
     }
 }
 
-struct ErrorResponse: Decodable {
-    let error: String
-}

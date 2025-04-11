@@ -45,7 +45,9 @@ struct SignInView: View {
             CustomInputTextField(title: "Insira sua senha", isSecureTextEntry: true, text: $viewModel.password)
 
             Button {
-                
+                Task {
+                    await viewModel.login()
+                }
             } label: {
                 ButtonView(text: "Entrar")
             }
@@ -60,6 +62,14 @@ struct SignInView: View {
         }
         .padding()
         .navigationBarBackButtonHidden()
+        .alert("Ops, algo deu errado!", isPresented: $viewModel.showAlert) {
+            Button("Ok") {
+                
+            }
+        } message: {
+            Text("Houve um erro ao entrar na sua conta")
+        }
+
     }
 }
 

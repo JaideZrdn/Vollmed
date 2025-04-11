@@ -13,6 +13,7 @@ class SignInViewModel: ObservableObject {
     
     @Published var email: String = ""
     @Published var password: String = ""
+    @Published var showAlert: Bool = false
     
     func login() async {
         
@@ -22,13 +23,13 @@ class SignInViewModel: ObservableObject {
         await MainActor.run {
             
             switch response {
-            case .error(let error):
+            case .error(let _):
+                showAlert = true
             case .loaded(let response):
+                print(response.auth)
             case .loading:
+                showAlert = true
             }
-            
         }
-        
     }
-    
 }

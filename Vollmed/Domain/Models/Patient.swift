@@ -27,3 +27,7 @@ struct Patient: Codable, Identifiable {
         case healthPlan = "planoSaude"
     }
 }
+
+struct ErrorResponse: Decodable {
+    let error: String
+}
