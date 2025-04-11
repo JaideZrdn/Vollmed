@@ -36,10 +36,7 @@ struct SignUpView: View {
                     .bold()
                     .foregroundStyle(.accent)
                 
-                TextField("Insira seu nome completo", text: $viewModel.name)
-                    .padding(14)
-                    .background(Color.gray.opacity(0.25))
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                CustomInputTextField(title: "Insira seu nome completo", text: $viewModel.name)
                     .autocorrectionDisabled()
                 
                 Text("Email")
@@ -47,49 +44,45 @@ struct SignUpView: View {
                     .bold()
                     .foregroundStyle(.accent)
                 
-                TextField("Insira seu email", text: $viewModel.email)
-                    .padding(14)
-                    .background(Color.gray.opacity(0.25))
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .autocorrectionDisabled()
-                    .keyboardType(.emailAddress)
+                CustomInputTextField(title: "Insira seu email", keyboardType: .emailAddress, isSecureTextEntry: false, text: $viewModel.email)
                     .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
                 
                 Text("CPF")
                     .font(.title3)
                     .bold()
                     .foregroundStyle(.accent)
                 
-                TextField("Insira seu CPF", text: $viewModel.cpf)
-                    .padding(14)
-                    .background(Color.gray.opacity(0.25))
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .keyboardType(.numberPad)
+                CustomInputTextField(title: "Insira seu CPF", keyboardType: .numberPad, isSecureTextEntry: false, text: $viewModel.cpf)
                 
                 Text("Telefone")
                     .font(.title3)
                     .bold()
                     .foregroundStyle(.accent)
                 
-                TextField("Insira seu telefone", text: $viewModel.phoneNumber)
-                    .padding(14)
-                    .background(Color.gray.opacity(0.25))
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .keyboardType(.numberPad)
+                CustomInputTextField(title: "Insira seu telefone", keyboardType: .numberPad, isSecureTextEntry: false, text: $viewModel.phoneNumber)
                 
                 Text("Senha")
                     .font(.title3)
                     .bold()
                     .foregroundStyle(.accent)
                 
-                SecureField("Insira sua senha", text: $viewModel.password)
-                    .padding(14)
-                    .background(Color.gray.opacity(0.25))
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                CustomInputTextField(title: "Insira sua senha", isSecureTextEntry: true, text: $viewModel.password)
+                
+                Text("Selecione o seu plano de saúde")
+                    .bold()
+                    .font(.title3)
+                    .foregroundStyle(.accent)
+                
+                Picker("Plano de Saúde", selection: $viewModel.healthPlan) {
+                    ForEach(viewModel.healthPlans, id: \.self) { plan in
+                        Text(plan)
+                    }
+                }
                     
                 
                 Button {
-                    
+                    print(viewModel.healthPlan)
                 } label: {
                     ButtonView(text: "Cadastrar")
                 }
@@ -102,8 +95,10 @@ struct SignUpView: View {
                         .foregroundStyle(.accent)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
+                
+                
+                
             }
-            
             
         }
         .navigationBarBackButtonHidden()

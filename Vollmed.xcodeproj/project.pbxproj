@@ -17,6 +17,7 @@
 		64C0381E2DA446CA00207E82 /* APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C0381D2DA446C500207E82 /* APIs.swift */; };
 		64C038232DA4544200207E82 /* AsyncData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C038222DA4543F00207E82 /* AsyncData.swift */; };
 		64C038262DA4572D00207E82 /* VollmedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C038252DA4572100207E82 /* VollmedService.swift */; };
+		64F8491D2DA97B3E008944C1 /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F8491C2DA97B3C008944C1 /* Patient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		64C0381D2DA446C500207E82 /* APIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIs.swift; sourceTree = "<group>"; };
 		64C038222DA4543F00207E82 /* AsyncData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncData.swift; sourceTree = "<group>"; };
 		64C038252DA4572100207E82 /* VollmedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VollmedService.swift; sourceTree = "<group>"; };
+		64F8491C2DA97B3C008944C1 /* Patient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +54,7 @@
 		484BEEFA2AB0F5680033C07A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				64F8491C2DA97B3C008944C1 /* Patient.swift */,
 				647733D82DA0BDB9000F3557 /* Appointment.swift */,
 				647733D42D9F292F000F3557 /* ScheduleAppointment.swift */,
 				484BEEFC2AB0F5750033C07A /* Specialist.swift */,
@@ -213,6 +216,7 @@
 				64C0381A2DA446B300207E82 /* APIClient.swift in Sources */,
 				64C038262DA4572D00207E82 /* VollmedService.swift in Sources */,
 				64C038232DA4544200207E82 /* AsyncData.swift in Sources */,
+				64F8491D2DA97B3E008944C1 /* Patient.swift in Sources */,
 				64C0381E2DA446CA00207E82 /* APIs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

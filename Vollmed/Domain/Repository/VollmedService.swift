@@ -41,5 +41,11 @@ class VollmedService {
         let result: AsyncData<String> = await apiClient.request(.cancelAppointment(appointmentID: appointmentID, reasonToCancel: reasonToCancel))
         return result
     }
+    
+    //Funcao para registrar um novo paciente
+    func registerPatient(patient: Patient) async -> AsyncData<Patient> {
+        let result: AsyncData<Patient> = await apiClient.request(.register(patient: patient))
+        return result
+    }
 }
 

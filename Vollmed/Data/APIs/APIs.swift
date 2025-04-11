@@ -30,6 +30,8 @@ extension APIs {
                 return "consulta/\(appointmentID)"
             case .cancelAppointment(let appointmentID, _):
                 return "consulta/\(appointmentID)"
+            case .register:
+                return "paciente"
             }
             
         }
@@ -39,20 +41,19 @@ extension APIs {
             switch self {
             case .getAllAppointmentsFrom, .getAllSpecialists, .downloadImage:
                 return .get
-            case .scheduleAppointment:
+            case .scheduleAppointment, .register:
                 return .post
             case .rescheduleAppointment:
                 return .patch
             case .cancelAppointment:
                 return .delete
             }
-            
         }
         
         var headers: [String : String]? {
             
             switch self {
-            case .scheduleAppointment, .rescheduleAppointment, .cancelAppointment:
+            case .scheduleAppointment, .rescheduleAppointment, .cancelAppointment, .register:
                 return ["Content-Type": "application/json"]
             default:
                 return nil
@@ -73,6 +74,8 @@ extension APIs {
             case .rescheduleAppointment(_, let newDate):
                 let requestData = ["data": newDate]
                 return try? JSONSerialization.data(withJSONObject: requestData)
+            case .register(patient: let patient):
+                return try? JSONEncoder().encode(patient)
             default:
                 return nil
             }
@@ -84,6 +87,7 @@ extension APIs {
         case scheduleAppointment(scheduleAppointmentRequest: ScheduleAppointmentRequest)
         case rescheduleAppointment(appointmentID: String, date: String)
         case cancelAppointment(appointmentID: String, reasonToCancel: String)
+        case register(patient: Patient)
     }
 }
 

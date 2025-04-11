@@ -33,12 +33,8 @@ struct SignInView: View {
                 .bold()
                 .foregroundStyle(.accent)
             
-            TextField("Insira seu email", text: $viewModel.email)
-                .padding(14)
-                .background(Color(.gray).opacity(0.25))
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+            CustomInputTextField(title: "Insira seu email", keyboardType: .emailAddress, isSecureTextEntry: false, text: $viewModel.email)
                 .autocorrectionDisabled()
-                .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
             
             Text("Senha")
@@ -46,10 +42,7 @@ struct SignInView: View {
                 .bold()
                 .foregroundStyle(.accent)
             
-            SecureField("Insira sua senha", text: $viewModel.password)
-                .padding(14)
-                .background(Color(.gray).opacity(0.25))
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+            CustomInputTextField(title: "Insira sua senha", isSecureTextEntry: true, text: $viewModel.password)
 
             Button {
                 
