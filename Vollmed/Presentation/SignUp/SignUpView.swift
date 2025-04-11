@@ -104,14 +104,15 @@ struct SignUpView: View {
         .padding()
         .alert(viewModel.isPatientRegistered ? "Sucesso!" : "Ops, algo deu errado!", isPresented: $viewModel.showAlert) {
             Button("OK") {
-                
+                if viewModel.isPatientRegistered {
+                    viewModel.navigateToSignInView = true
+                }
             }
         } message: {
-            if viewModel.isPatientRegistered {
-                Text("O paciente foi criado com sucesso!")
-            } else {
-                Text("Houve um erro a cadastrar o paciente")
-            }
+            Text(viewModel.alertMessage)
+        }
+        .navigationDestination(isPresented: $viewModel.navigateToSignInView) {
+            SignInView()
         }
     }
 }

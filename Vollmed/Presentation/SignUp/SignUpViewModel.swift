@@ -20,8 +20,19 @@ class SignUpViewModel: ObservableObject {
             switch response {
             case .loaded:
                 isPatientRegistered = true
-            default:
+                alertMessage = "Cadastro realizado com sucesso!"
+            case .error(let error):
+                
+                if let apiError = error as? APIError {
+                    alertMessage = apiError.errorDescription ?? "Erro desconhecido."
+                } else {
+                    alertMessage = error.localizedDescription
+                }
+                
                 isPatientRegistered = false
+            case .loading:
+                isPatientRegistered = false
+                alertMessage = "Tempo de espera excedido. Por favor, tente novamente mais tarde."
             }
             showAlert = true
         }
@@ -35,6 +46,10 @@ class SignUpViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var phoneNumber: String = ""
     @Published var healthPlan: String = "Amil"
+    
+    var alertMessage: String = ""
+    
+    @Published var navigateToSignInView: Bool = false
     
     let healthPlans: [String] = [
     "Amil", "Unimed", "Bradesco Saúde", "SulAmérica", "Hapvida", "Notredame Intermédica", "São Francisco Saúde", "Golden Cross", "Medial Saúde", "América Saúde", "Outro"

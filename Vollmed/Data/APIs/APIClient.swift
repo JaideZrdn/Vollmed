@@ -32,7 +32,11 @@ class URLSessionAPIClient<Endpoint: APIEndpoint>: APIClient {
             }
             
             guard (200...299).contains(httpURLResponse.statusCode) else {
-                return .error(APIError.invalidStatusCode(httpURLResponse.statusCode))
+                if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
+                    return .error(APIError.serverError(errorResponse.error))
+                } else {
+                    return .error(APIError.invalidStatusCode(httpURLResponse.statusCode))
+                }
             }
             
             let decodedData = try JSONDecoder().decode(T.self, from: data)
@@ -44,5 +48,4 @@ class URLSessionAPIClient<Endpoint: APIEndpoint>: APIClient {
             return .error(APIError.unknownError)
         }
     }
-    
 }

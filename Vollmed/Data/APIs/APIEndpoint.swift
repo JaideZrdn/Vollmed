@@ -31,12 +31,13 @@ enum HTTPMethod: String, CaseIterable {
     case patch = "PATCH"
 }
 
-enum APIError: LocalizedError {
+enum APIError: LocalizedError, Decodable {
     case nonHTTPResponse
     case invalidStatusCode(Int)
     case invalidData
     case networkError(String)
     case unknownError
+    case serverError(String)
 
     var errorDescription: String? {
         switch self {
@@ -50,6 +51,12 @@ enum APIError: LocalizedError {
             return "Erro de rede: \(message)"
         case .unknownError:
             return "Ocorreu um erro desconhecido."
+        case .serverError(let message):
+            return message
         }
     }
+}
+
+struct ErrorResponse: Decodable {
+    let error: String
 }
