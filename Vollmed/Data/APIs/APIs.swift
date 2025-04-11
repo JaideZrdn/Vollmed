@@ -55,8 +55,21 @@ extension APIs {
         var headers: [String : String]? {
             
             switch self {
-            case .scheduleAppointment, .rescheduleAppointment, .cancelAppointment, .register, .login:
+            case .register, .login:
                 return ["Content-Type": "application/json"]
+            case .scheduleAppointment, .rescheduleAppointment, .cancelAppointment:
+                if let token = UserDefaultsHelper.get(for: "token") {
+                    print(token)
+                    return ["Content-Type": "application/json", "Authorization" : "Bearer \(token)"]
+                } else {
+                    return nil
+                }
+            case .getAllAppointmentsFrom:
+                if let token = UserDefaultsHelper.get(for: "token") {
+                    return ["Authorization" : "Bearer \(token)"]
+                } else {
+                    return nil
+                }
             default:
                 return nil
             }

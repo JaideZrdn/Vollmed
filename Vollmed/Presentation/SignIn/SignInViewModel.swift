@@ -23,9 +23,13 @@ class SignInViewModel: ObservableObject {
         await MainActor.run {
             
             switch response {
-            case .error(let _):
+            case .error:
                 showAlert = true
             case .loaded(let response):
+                
+                UserDefaultsHelper.save(value: response.token, key: "token")
+                UserDefaultsHelper.save(value: response.id, key: "patient-id")
+                
                 print(response.auth)
             case .loading:
                 showAlert = true

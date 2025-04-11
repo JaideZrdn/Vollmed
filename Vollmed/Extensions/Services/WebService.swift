@@ -8,8 +8,6 @@
 import Foundation
 import UIKit
 
-let patientID = "7c01b567-2855-4f5f-848a-6e9a6e465225"
-
 struct WebService {
     
     private let baseURL = "http://localhost:3000"

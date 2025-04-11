@@ -14,7 +14,9 @@ class MyAppointmentsViewModel: ObservableObject {
     
     func getAllAppointments() async {
         Task { @MainActor in
-            appointments = await service.getAllAppointments(from: patientID)
+            if let id = UserDefaultsHelper.get(for: "patient-id") {
+                appointments = await service.getAllAppointments(from: id)
+            }
         }
     }
     

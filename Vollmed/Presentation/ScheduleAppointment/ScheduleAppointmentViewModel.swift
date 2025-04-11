@@ -36,18 +36,21 @@ class ScheduleAppointmentViewModel: ObservableObject {
     
     func scheduleAppointment(specialistID: String) async {
         
-        let appointmentResponse = await service.scheduleAppointment(specialistID: specialistID, patientID: patientID, date: selectedDate.convertToString())
-        
-        await MainActor.run {
-            switch appointmentResponse {
-            case .error:
-                isAppointmentScheduled = false
-            default:
-                isAppointmentScheduled = true
+        if let id = UserDefaultsHelper.get(for: "patient-id") {
+            
+            let appointmentResponse = await service.scheduleAppointment(specialistID: specialistID, patientID: id, date: selectedDate.convertToString())
+            
+            
+            await MainActor.run {
+                switch appointmentResponse {
+                case .error:
+                    isAppointmentScheduled = false
+                default:
+                    isAppointmentScheduled = true
+                }
+                showAlert = true
             }
-            showAlert = true
         }
+        
     }
-    
-    
 }
