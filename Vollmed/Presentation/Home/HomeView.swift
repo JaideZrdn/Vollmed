@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @StateObject var homeViewModel: HomeViewModel = .init()
+    var authManager = AuthenticationManager.shared
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -44,6 +45,25 @@ struct HomeView: View {
         .onAppear {
             Task {
                 await homeViewModel.getSpecialists()
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task {
+                        if let response = await homeViewModel.logoutPatient() {
+                            authManager.removeToken()
+                            authManager.removePatientID()
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 2) {
+                        
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                        Text("Logout")
+                        
+                    }
+                }
             }
         }
     }

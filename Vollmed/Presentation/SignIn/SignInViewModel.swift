@@ -15,25 +15,24 @@ class SignInViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var showAlert: Bool = false
     
-    func login() async {
+    func login() async -> LoginResponse? {
         
         let loginRequest = LoginRequest(email: email, password: password)
         let response = await service.login(loginRequest: loginRequest)
         
-        await MainActor.run {
+        return await MainActor.run {
             
             switch response {
             case .error:
                 showAlert = true
+                return nil
             case .loaded(let response):
-                
-                UserDefaultsHelper.save(value: response.token, key: "token")
-                UserDefaultsHelper.save(value: response.id, key: "patient-id")
-                
-                print(response.auth)
+                return response
             case .loading:
                 showAlert = true
+                return nil
             }
+            
         }
     }
 }

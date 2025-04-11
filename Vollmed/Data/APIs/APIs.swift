@@ -34,6 +34,8 @@ extension APIs {
                 return "paciente"
             case .login:
                 return "auth/login"
+            case .logout:
+                return "auth/logout"
             }
             
         }
@@ -43,7 +45,7 @@ extension APIs {
             switch self {
             case .getAllAppointmentsFrom, .getAllSpecialists, .downloadImage:
                 return .get
-            case .scheduleAppointment, .register, .login:
+            case .scheduleAppointment, .register, .login, .logout:
                 return .post
             case .rescheduleAppointment:
                 return .patch
@@ -58,14 +60,14 @@ extension APIs {
             case .register, .login:
                 return ["Content-Type": "application/json"]
             case .scheduleAppointment, .rescheduleAppointment, .cancelAppointment:
-                if let token = UserDefaultsHelper.get(for: "token") {
+                if let token = KeyChainHelper.get(for: "app-vollmed-token") {
                     print(token)
                     return ["Content-Type": "application/json", "Authorization" : "Bearer \(token)"]
                 } else {
                     return nil
                 }
-            case .getAllAppointmentsFrom:
-                if let token = UserDefaultsHelper.get(for: "token") {
+            case .getAllAppointmentsFrom, .logout:
+                if let token = KeyChainHelper.get(for: "app-vollmed-token") {
                     return ["Authorization" : "Bearer \(token)"]
                 } else {
                     return nil
@@ -106,6 +108,7 @@ extension APIs {
         case cancelAppointment(appointmentID: String, reasonToCancel: String)
         case register(patient: Patient)
         case login(loginRequest: LoginRequest)
+        case logout
     }
 }
 

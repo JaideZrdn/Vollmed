@@ -36,7 +36,7 @@ class ScheduleAppointmentViewModel: ObservableObject {
     
     func scheduleAppointment(specialistID: String) async {
         
-        if let id = UserDefaultsHelper.get(for: "patient-id") {
+        if let id = KeyChainHelper.get(for: "app-vollmed-patient-id") {
             
             let appointmentResponse = await service.scheduleAppointment(specialistID: specialistID, patientID: id, date: selectedDate.convertToString())
             

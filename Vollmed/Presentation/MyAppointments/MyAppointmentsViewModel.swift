@@ -14,12 +14,9 @@ class MyAppointmentsViewModel: ObservableObject {
     
     func getAllAppointments() async {
         Task { @MainActor in
-            if let id = UserDefaultsHelper.get(for: "patient-id") {
+            if let id = KeyChainHelper.get(for: "app-vollmed-patient-id") {
                 appointments = await service.getAllAppointments(from: id)
             }
         }
     }
-    
-    
-    
 }

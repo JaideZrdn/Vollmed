@@ -53,5 +53,11 @@ class VollmedService {
         let result: AsyncData<LoginResponse> = await apiClient.request(.login(loginRequest: loginRequest))
         return result
     }
+    
+    // Funcao para realizar o Logout
+    func logout() async -> AsyncData<LogoutResponse> {
+        let result: AsyncData<LogoutResponse> = await apiClient.request(.logout)
+        return result
+    }
 }
 

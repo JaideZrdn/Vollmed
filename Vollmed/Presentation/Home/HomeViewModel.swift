@@ -17,4 +17,21 @@ class HomeViewModel: ObservableObject {
             specialists = await service.fetchAllSpecialists()
         }
     }
+    
+    func logoutPatient() async -> LogoutResponse?{
+        
+        let response = await service.logout()
+        
+        switch response {
+            
+        case .error:
+            return nil
+        case .loaded(let response):
+            return response
+        case .loading:
+            return nil
+            
+        }
+        
+    }
 }

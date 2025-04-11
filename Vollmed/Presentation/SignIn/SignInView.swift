@@ -10,6 +10,7 @@ import SwiftUI
 struct SignInView: View {
     
     @StateObject private var viewModel = SignInViewModel()
+    var authManager = AuthenticationManager.shared
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -46,7 +47,10 @@ struct SignInView: View {
 
             Button {
                 Task {
-                    await viewModel.login()
+                    if let response = await viewModel.login() {
+                        authManager.saveToken(response.token)
+                        authManager.savePatientID(response.id)
+                    }
                 }
             } label: {
                 ButtonView(text: "Entrar")
