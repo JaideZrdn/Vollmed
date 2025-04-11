@@ -82,7 +82,9 @@ struct SignUpView: View {
                     
                 
                 Button {
-                    print(viewModel.healthPlan)
+                    Task {
+                        await viewModel.signUp()
+                    }
                 } label: {
                     ButtonView(text: "Cadastrar")
                 }
@@ -95,14 +97,22 @@ struct SignUpView: View {
                         .foregroundStyle(.accent)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
-                
-                
-                
             }
             
         }
         .navigationBarBackButtonHidden()
         .padding()
+        .alert(viewModel.isPatientRegistered ? "Sucesso!" : "Ops, algo deu errado!", isPresented: $viewModel.showAlert) {
+            Button("OK") {
+                
+            }
+        } message: {
+            if viewModel.isPatientRegistered {
+                Text("O paciente foi criado com sucesso!")
+            } else {
+                Text("Houve um erro a cadastrar o paciente")
+            }
+        }
     }
 }
 

@@ -11,20 +11,24 @@ class SignUpViewModel: ObservableObject {
     
     let service = VollmedService()
     
-    func signUp() async -> Bool {
+    func signUp() async  {
         
         let patient = Patient(id: nil, cpf: cpf, name: name, email: email, password: password, phoneNumber: phoneNumber, healthPlan: healthPlan)
         let response = await service.registerPatient(patient: patient)
         
-        switch response {
-        case .loaded:
-            return true
-        default:
-            return false
+        Task { @MainActor in
+            switch response {
+            case .loaded:
+                isPatientRegistered = true
+            default:
+                isPatientRegistered = false
+            }
+            showAlert = true
         }
-        
     }
     
+    @Published var showAlert: Bool = false
+    @Published var isPatientRegistered: Bool = false
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var cpf: String = ""
